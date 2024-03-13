@@ -46,6 +46,29 @@ class ExpenseTask extends Task {
 
 }
 
+class TaskController extends Task {
+    #tasks = [];
+    #doneTasks = [];
+    // [1,2,3,4]
+    addTasks(...tasks) {
+        for (let i = 0; i < tasks.length; i++) {
+            const targetId = tasks[i].id;
+            const targetTask = this.#tasks.find(task => task.id === targetId);
+
+            if (typeof targetTask !== 'undefined') continue;
+
+            this.#tasks.push(tasks[i]);
+        }
+    }
+
+    deleteTask(task) {
+        const targetId = task.id;
+        const targetTaskIndex = this.#tasks.findIndex(task => task.id === targetId);
+
+        if (targetTaskIndex === -1) return;
+
+        this.#tasks.splice(targetTaskIndex, 1);
+    }
 
 
 
