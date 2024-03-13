@@ -24,7 +24,27 @@ function Task(description, cost) {
     });
 }
 
+class IncomeTask extends Task {
 
+    makeDone(budget) {
+        budget.income += this.cost;
+    }
+
+    makeUnDone(budget) {
+        budget.income -= this.cost;
+    }
+}
+
+class ExpenseTask extends Task {
+    makeDone(budget) {
+        budget.expenses += this.cost;
+    }
+
+    makeUnDone(budget) {
+        budget.expenses -= this.cost;
+    }
+
+}
 
 
 
