@@ -117,12 +117,12 @@ class TaskController extends Task {
         let tasks = this.#tasks;
 
         if ('description' in filters) {
-            tasks = task.filter(task => task.description.includes(filters.description));
+            tasks = tasks.filter(task => task.description.includes(filters.description));
 
         }
 
-        if ('isIncome' in filters && typeof filters.isIncome === 'boolean') {
-            tasks = task.filter(task => {
+        if ('isIncome' in filters) {
+            tasks = tasks.filter(task => {
                 if (filters.isIncome) {
                     return task instanceof IncomeTask;
                 } else {
@@ -132,14 +132,30 @@ class TaskController extends Task {
         }
 
 
-        if ('isCompleted' in filters && typeof filters.isCompleted === 'boolean') {
-            tasks = task.filter(task => {
-                if (filters.isCompleted) {
-                    return task.isCompleted;
+        if ('isCompleted' in filters) {
+            tasks = tasks.filter(task => {
+               /*  if (this.#doneTasks.indexOf(task) === -1) {
+                    if (filters.isCompleted) {
+                        return false;
+                    } else return true;
                 } else {
-                    return !task.isCopleted;
+                    if (filters.isCompleted) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } */
+
+                if (this.#doneTasks.indexOf(task) === -1) {
+                    return !filters.isCompleted;
+                        
+                } else {
+                     return filters.isCompleted;
+                    
                 }
-            });
+
+            }
+            );
         }
 
         return tasks;
