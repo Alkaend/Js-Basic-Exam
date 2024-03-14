@@ -70,5 +70,11 @@ class TaskController extends Task {
         this.#tasks.splice(targetTaskIndex, 1);
     }
 
+    getTasks() {
+        // spread operator
+        return [...this.#tasks];
+
+    }
+
 
 
