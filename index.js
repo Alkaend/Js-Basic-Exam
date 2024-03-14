@@ -46,7 +46,7 @@ class ExpenseTask extends Task {
 
 }
 
-class TaskController extends Task {
+class TaskController  {
     #tasks = [];
     #doneTasks = [];
     // [1,2,3,4]
@@ -161,4 +161,70 @@ class TaskController extends Task {
         return tasks;
     }
 
+    hasInTasks(task){
+        return this.#tasks.includes(task);
+    }
+
+    hasInDoneTasks(task){
+        return this.#doneTasks.includes(task)
+    }
+
+    
+
+}
+
+class BudgetController {
+    #tasksControler = new TasksController();
+    #budget = {
+        balance:0,
+        income:0,
+        expenses:0
+    };
+
+    constructor (initialBalance = 0){
+        this.#budget.balance = initialBalance;
+    }
+
+    get balance (){
+        return this.#budget.balance;
+    }
+
+    get income (){
+        return this.#budget.income;
+    }
+
+    get expenses(){
+        return this.#budget.expenses;
+    }
+
+    calculateBalance(){
+        return this.balance + this.income - this.expenses;
+    }
+
+    getTasks(){
+        return this.#tasksControler.getTasks();
+    }
+
+    addTasks(...tasks){
+        this.#tasksControler.addTasks(...tasks);
+    }
+
+    deleteTask(task){
+        if (!this.#tasksControler.hasInTasks(task)){
+            console.log(`Task ${task.id} isn't recognized`);
+            return;
+        } 
+        if(this.#tasksControler.hasInDoneTasks(task)){
+            task.makeUnDone(this.#budget);
+        }
+        this.#tasksControler.deleteTask(task);
+    }
+
+    doneTask(task){
+
+    }
+
+    unDoneTask(task){
+
+    }
 }
