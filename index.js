@@ -173,7 +173,7 @@ class TaskController  {
         this.#doneTasks.push(task);
     }
 
-    deleteTaskFromDoneTasks(task){
+    deleteFromDoneTasks(task){
         const targetId = task.id;
         const targetTaskIndex = this.#doneTasks.findIndex(task => task.id === targetId);
 
@@ -244,10 +244,18 @@ class BudgetController {
         } 
         task.makeDone(this.#budget);
         this.#tasksControler.addToDoneTasks(task);
-
     }
 
     unDoneTask(task){
-
+        if (!this.#tasksControler.hasInTasks(task)){
+            console.log(`Task ${task.id} isn't recognized`);
+            return;
+        } 
+        if (!this.#tasksControler.hasInDoneTasks(task)){
+            console.log("Task isn't done before");
+            return;
+        } 
+        task.makeUnDone(this.#budget);
+        this.#tasksControler.deleteFromDoneTasks(task);
     }
 }
