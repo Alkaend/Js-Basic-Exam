@@ -104,6 +104,45 @@ class TaskController extends Task {
 
     }
 
-    getFilteredTasks(filters) {}
+    getFilteredTasks(filters) {
+        /* 
+        filters = {
+            description:
+            isIncome:
+            isCompleted:
+        }
+
+         */
+
+        let tasks = this.#tasks;
+
+        if ('description' in filters) {
+            tasks = task.filter(task => task.description.includes(filters.description));
+
+        }
+
+        if ('isIncome' in filters && typeof filters.isIncome === 'boolean') {
+            tasks = task.filter(task => {
+                if (filters.isIncome) {
+                    return task instanceof IncomeTask;
+                } else {
+                    return task instanceof ExpenseTask;
+                }
+            });
+        }
+
+
+        if ('isCompleted' in filters && typeof filters.isCompleted === 'boolean') {
+            tasks = task.filter(task => {
+                if (filters.isCompleted) {
+                    return task.isCompleted;
+                } else {
+                    return !task.isCopleted;
+                }
+            });
+        }
+
+        return tasks;
+    }
 
 }
