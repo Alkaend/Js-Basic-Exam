@@ -169,6 +169,19 @@ class TaskController  {
         return this.#doneTasks.includes(task)
     }
 
+    addToDoneTasks(task){
+        this.#doneTasks.push(task);
+    }
+
+    deleteTaskFromDoneTasks(task){
+        const targetId = task.id;
+        const targetTaskIndex = this.#doneTasks.findIndex(task => task.id === targetId);
+
+        if (targetTaskIndex === -1) return;
+
+        this.#doneTasks.splice(targetTaskIndex, 1);
+    }
+
     
 
 }
@@ -221,6 +234,16 @@ class BudgetController {
     }
 
     doneTask(task){
+        if (!this.#tasksControler.hasInTasks(task)){
+            console.log(`Task ${task.id} isn't recognized`);
+            return;
+        } 
+        if (this.#tasksControler.hasInDoneTasks(task)){
+            console.log('Task is already done');
+            return;
+        } 
+        task.makeDone(this.#budget);
+        this.#tasksControler.addToDoneTasks(task);
 
     }
 
