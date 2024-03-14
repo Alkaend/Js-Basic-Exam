@@ -77,4 +77,33 @@ class TaskController extends Task {
     }
 
 
+    getTasksSortedBy(sortBy) {
+        const tasks = this.getTasks();
+        let sortFn;
 
+        switch (sortBy) {
+            case 'description':
+                sortFn = (a, b) => a.description.localCompare(b.description);
+                break;
+
+            case 'status':
+                sortFn = (a, b) => {
+                    const isADone = this.#doneTasks.includes(a);
+                    const isBDone = this.#doneTasks.includes(b);
+                    return isBDone - isADone;
+                };
+                break;
+
+            case 'cost':
+                sortFn = (a, b) => b.cost - a.cost;
+                break;
+
+        }
+
+        return tasks.sort(sortFn);
+
+    }
+
+    getFilteredTasks(filters) {}
+
+}
