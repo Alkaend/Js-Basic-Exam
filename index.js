@@ -46,10 +46,10 @@ class ExpenseTask extends Task {
 
 }
 
-class TaskController  {
+class TaskController {
     #tasks = [];
     #doneTasks = [];
-    // [1,2,3,4]
+
     addTasks(...tasks) {
         for (let i = 0; i < tasks.length; i++) {
             const targetId = tasks[i].id;
@@ -71,7 +71,7 @@ class TaskController  {
     }
 
     getTasks() {
-        // spread operator
+
         return [...this.#tasks];
 
     }
@@ -105,14 +105,7 @@ class TaskController  {
     }
 
     getFilteredTasks(filters) {
-        /* 
-        filters = {
-            description:
-            isIncome:
-            isCompleted:
-        }
 
-         */
 
         let tasks = this.#tasks;
 
@@ -134,24 +127,13 @@ class TaskController  {
 
         if ('isCompleted' in filters) {
             tasks = tasks.filter(task => {
-               /*  if (this.#doneTasks.indexOf(task) === -1) {
-                    if (filters.isCompleted) {
-                        return false;
-                    } else return true;
-                } else {
-                    if (filters.isCompleted) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } */
 
                 if (this.#doneTasks.indexOf(task) === -1) {
                     return !filters.isCompleted;
-                        
+
                 } else {
-                     return filters.isCompleted;
-                    
+                    return filters.isCompleted;
+
                 }
 
             }
@@ -161,19 +143,19 @@ class TaskController  {
         return tasks;
     }
 
-    hasInTasks(task){
+    hasInTasks(task) {
         return this.#tasks.includes(task);
     }
 
-    hasInDoneTasks(task){
+    hasInDoneTasks(task) {
         return this.#doneTasks.includes(task)
     }
 
-    addToDoneTasks(task){
+    addToDoneTasks(task) {
         this.#doneTasks.push(task);
     }
 
-    deleteFromDoneTasks(task){
+    deleteFromDoneTasks(task) {
         const targetId = task.id;
         const targetTaskIndex = this.#doneTasks.findIndex(task => task.id === targetId);
 
@@ -182,79 +164,79 @@ class TaskController  {
         this.#doneTasks.splice(targetTaskIndex, 1);
     }
 
-    
+
 
 }
 
 class BudgetController {
     #tasksControler = new TasksController();
     #budget = {
-        balance:0,
-        income:0,
-        expenses:0
+        balance: 0,
+        income: 0,
+        expenses: 0
     };
 
-    constructor (initialBalance = 0){
+    constructor(initialBalance = 0) {
         this.#budget.balance = initialBalance;
     }
 
-    get balance (){
+    get balance() {
         return this.#budget.balance;
     }
 
-    get income (){
+    get income() {
         return this.#budget.income;
     }
 
-    get expenses(){
+    get expenses() {
         return this.#budget.expenses;
     }
 
-    calculateBalance(){
+    calculateBalance() {
         return this.balance + this.income - this.expenses;
     }
 
-    getTasks(){
+    getTasks() {
         return this.#tasksControler.getTasks();
     }
 
-    addTasks(...tasks){
+    addTasks(...tasks) {
         this.#tasksControler.addTasks(...tasks);
     }
 
-    deleteTask(task){
-        if (!this.#tasksControler.hasInTasks(task)){
+    deleteTask(task) {
+        if (!this.#tasksControler.hasInTasks(task)) {
             console.log(`Task ${task.id} isn't recognized`);
             return;
-        } 
-        if(this.#tasksControler.hasInDoneTasks(task)){
+        }
+        if (this.#tasksControler.hasInDoneTasks(task)) {
             task.makeUnDone(this.#budget);
         }
         this.#tasksControler.deleteTask(task);
     }
 
-    doneTask(task){
-        if (!this.#tasksControler.hasInTasks(task)){
+    doneTask(task) {
+        if (!this.#tasksControler.hasInTasks(task)) {
             console.log(`Task ${task.id} isn't recognized`);
             return;
-        } 
-        if (this.#tasksControler.hasInDoneTasks(task)){
+        }
+        if (this.#tasksControler.hasInDoneTasks(task)) {
             console.log('Task is already done');
             return;
-        } 
+        }
         task.makeDone(this.#budget);
         this.#tasksControler.addToDoneTasks(task);
     }
 
-    unDoneTask(task){
-        if (!this.#tasksControler.hasInTasks(task)){
+    unDoneTask(task) {
+        if (!this.#tasksControler.hasInTasks(task)) {
             console.log(`Task ${task.id} isn't recognized`);
             return;
-        } 
-        if (!this.#tasksControler.hasInDoneTasks(task)){
+        }
+        if (!this.#tasksControler.hasInDoneTasks(task)) {
             console.log("Task isn't done before");
             return;
-        } 
+        }
         task.makeUnDone(this.#budget);
         this.#tasksControler.deleteFromDoneTasks(task);
     }
